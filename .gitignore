@@ -8,4 +8,4 @@
 /build
 /captures
 .externalNativeBuild
-Constants.java
+**/Constants.java

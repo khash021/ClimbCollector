@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.khash.climbcollector">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +19,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".CollectDataActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="Collect Data"/>
+
+        <activity android:name=".MapViewActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="Map View"/>
+
+        <activity android:name=".ListViewActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="List View"/>
+
     </application>
 
 </manifest>

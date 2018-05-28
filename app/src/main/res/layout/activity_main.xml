@@ -1,18 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:gravity="center">
 
-    <TextView
+    <EditText
+        android:id="@+id/et_route_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:hint="Enter route's name here"/>
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/bttn_collect_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Collectin"
+        android:layout_margin="12dp"/>
+
+    <Button
+        android:id="@+id/bttn_view_data_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View data on maps"
+        android:layout_margin="12dp"/>
+
+    <Button
+        android:id="@+id/bttn_view_data_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View List of data"
+        android:layout_margin="12dp"/>
+
+</LinearLayout>

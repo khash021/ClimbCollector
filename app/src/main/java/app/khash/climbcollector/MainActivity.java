@@ -1,7 +1,10 @@
 package app.khash.climbcollector;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,12 +21,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private final String TAG = MainActivity.class.getSimpleName();
 
+    public final static int REQUEST_CODE = 1;
+
     private EditText mRouteNameText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //get location permission
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+
+            // No explanation needed; request the permission
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_CODE);
+
+            // REQUEST_CODE is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+        } //permission
 
         Button collectButton = findViewById(R.id.bttn_collect_data);
         collectButton.setOnClickListener(this);

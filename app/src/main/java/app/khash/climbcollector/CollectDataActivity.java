@@ -1,7 +1,10 @@
 package app.khash.climbcollector;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +21,9 @@ import com.google.android.gms.location.LocationServices;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import app.khash.climbcollector.DataBase.DataContract.DataEntry;
 
 /**
  * Created by Khash on May.28.2018
@@ -36,10 +42,14 @@ public class CollectDataActivity extends AppCompatActivity implements GoogleApiC
 
     private TextView mLatText, mLngText, mAltText;
 
+    private String mRouteName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collect_data);
+
+        mRouteName = getIntent().getStringExtra(getString(R.string.route_name_intent_extra));
 
         //build api client
         buildGoogleApiClient();
@@ -66,7 +76,47 @@ public class CollectDataActivity extends AppCompatActivity implements GoogleApiC
         mLngText.setText(lng);
         mAltText.setText(alt);
 
+        insertDataToDb(location);
+
     }//onLocationChanged
+
+
+    //method for adding the location data to db
+    private void insertDataToDb(Location location) {
+
+        //Current date and time using the format declared at the beginning
+        final String currentDateTime = mDateFormat.format(Calendar.getInstance().getTime());
+
+        double lat = location.getLatitude();
+        double lng = location.getLongitude();
+        double alt = location.getAltitude();
+
+        // Create a new map of values,
+        ContentValues values = new ContentValues();
+        values.put(DataEntry.COLUMN_DATA_LATITUDE, lat);
+        values.put(DataEntry.COLUMN_DATA_LONGITUDE, lng);
+        values.put(DataEntry.COLUMN_DATA_ALTITUDE, alt);
+        values.put(DataEntry.COLUMN_DATA_DATE, currentDateTime);
+        values.put(DataEntry.COLUMN_DATA_ROUTE_NAME, mRouteName);
+
+        // Insert a new location into the provider, returning the content URI for the new location.
+        Uri newUri = getContentResolver().insert(DataEntry.CONTENT_URI, values);
+
+        // Show a toast message depending on whether or not the insertion was successful
+        if (newUri == null) {
+            // If the new content URI is null, then there was an error with insertion.
+            Log.v(TAG, "error saving data");
+        } else {
+            //since the insert method return the Uri of the row created, we can extract the ID of
+            //the new row using the parseID method with our newUri as an input. This method gets the
+            //last segment of the Uri, which is our new ID in this case and we store it in an object
+            // And add it to the confirmation method.
+            String id = String.valueOf(ContentUris.parseId(newUri));
+            // Otherwise, the insertion was successful and we can log
+            Log.v(TAG, "Successfully added: " + id);
+        }
+
+    }//insertDataToDb
 
     protected synchronized void buildGoogleApiClient(){
         //Building a GoogleApiClient on

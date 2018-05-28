@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (id) {
             case R.id.bttn_collect_data:
-                String routeName = mRouteNameText.getText().toString();
+                String routeName = mRouteNameText.getText().toString().trim();
                 Log.v(TAG, "Route name: " + routeName);
                 Intent collectIntent = new Intent(MainActivity.this, CollectDataActivity.class);
                 collectIntent.putExtra(getString(R.string.route_name_intent_extra), routeName);

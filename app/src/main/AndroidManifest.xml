@@ -3,6 +3,7 @@
     package="app.khash.climbcollector">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -13,10 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--<meta-data-->
-            <!--android:name="com.google.android.geo.API_KEY"-->
-            <!--android:value= "AIzaSyA1DIPA3MiEOgxYdSY2DUk-n7lCEf61Plg"/>-->
-        <!-- Make it get from the constants class-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value= "AIzaSyA1DIPA3MiEOgxYdSY2DUk-n7lCEf61Plg"/>
+         <!--Make it get from the constants class-->
 
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
 
@@ -45,6 +46,8 @@
             android:name=".DataBase.DataProvider"
             android:authorities="app.khash.climbcollector"
             android:exported="false" />
+
+        <service android:name=".GPSService"/>
 
     </application>
 

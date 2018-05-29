@@ -15,6 +15,28 @@
         android:layout_height="wrap_content"
         android:hint="Enter route's name here"/>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/bttn_service_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:layout_marginRight="6dp"/>
+
+        <Button
+            android:id="@+id/bttn_service_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop"
+            android:layout_marginLeft="6dp"/>
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/bttn_collect_data"
         android:layout_width="wrap_content"
@@ -35,5 +57,16 @@
         android:layout_height="wrap_content"
         android:text="View List of data"
         android:layout_margin="12dp"/>
+
+
+
+    <Button
+        android:id="@+id/bttn_delete_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete the entire database"
+        android:layout_marginTop="100dp"
+        android:textColor="#FF0000"
+        android:textStyle="bold"/>
 
 </LinearLayout>

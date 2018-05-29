@@ -11,7 +11,7 @@
 //import android.support.annotation.Nullable;
 //import android.util.Log;
 //
-//public class LocationCollectorService extends Service {
+//public class LocationCollectorService extends Service implements {
 //
 //    private final String TAG = LocationCollectorService.class.getSimpleName();
 //
@@ -54,8 +54,6 @@
 //            new LocationListener(LocationManager.GPS_PROVIDER),
 //            new LocationListener(LocationManager.NETWORK_PROVIDER)
 //    };
-//
-//
 //
 //    @Nullable
 //    @Override

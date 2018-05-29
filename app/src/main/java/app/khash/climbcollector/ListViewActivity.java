@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
 
 import app.khash.climbcollector.DataBase.DataContract.DataEntry;
@@ -43,6 +44,10 @@ public class ListViewActivity extends AppCompatActivity implements
 
         //Kick off the loader
         getLoaderManager().initLoader(LOCATION_LOADER, null, this);
+
+        //set an empty view
+        View emptyView = findViewById(R.id.empty_view);
+        locationListView.setEmptyView(emptyView);
 
     }//onCreate
 

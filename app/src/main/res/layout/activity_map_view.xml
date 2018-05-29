@@ -8,9 +8,41 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal"
         android:gravity="center">
 
+        <RadioGroup
+            android:id="@+id/radio_group_style"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Normal" />
+
+            <RadioButton
+                android:id="@+id/radio_sat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Satellite" />
+
+            <RadioButton
+                android:id="@+id/radio_terr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Terran" />
+
+            <RadioButton
+                android:id="@+id/radio_hybrid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hybrid"/>
+
+
+        </RadioGroup>
 
 
     </LinearLayout>
@@ -18,7 +50,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_weight="10"
         android:id="@+id/map"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"

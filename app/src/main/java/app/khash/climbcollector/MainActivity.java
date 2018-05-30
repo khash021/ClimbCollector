@@ -2,8 +2,10 @@ package app.khash.climbcollector;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -96,17 +98,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(listViewIntent);
                 break;
             case R.id.bttn_delete_all:
-                confirmDelete();
+//                confirmDelete();
+                Toast.makeText(this, "Disabled", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.bttn_service_start:
                 Intent serviceStartIntent = new Intent(this, GPSService.class);
-//                String routeName2 = mRouteNameText.getText().toString().trim();
+                String routeName2 = mRouteNameText.getText().toString().trim();
+                if (routeName2.trim().length() < 1) {
+                    //no name input
+                    routeName2 = "NA";
+                }
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                String key = getString(R.string.route_name_intent_extra);
+                sharedPref.edit().putString(key, routeName2).apply();
 //                serviceStartIntent.putExtra(getString(R.string.route_name_intent_extra), routeName2);
                 startService(serviceStartIntent);
+                Toast.makeText(this, "Started", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.bttn_service_stop:
                 Intent serviceStopIntent = new Intent(this, GPSService.class);
                 stopService(serviceStopIntent);
+                Toast.makeText(this, "Stopped", Toast.LENGTH_SHORT).show();
                 break;
         }//switch
     }//onClick

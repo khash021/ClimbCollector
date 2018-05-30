@@ -4,11 +4,13 @@ import android.app.Service;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -23,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import app.khash.climbcollector.DataBase.DataContract.DataEntry;
+
+//TODO: CLEAN UP, GO THROUGH THE CODE AND CHANGE VARIABLE NAMSE AND COMMENT
 
 public class GPSService extends Service implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -48,9 +52,6 @@ public class GPSService extends Service implements
 
         if (!mGoogleApiClient.isConnected())
             mGoogleApiClient.connect();
-
-//        mRouteName = intent.getStringExtra(getString(R.string.route_name_intent_extra));
-
         return START_STICKY;
     }
 
@@ -108,14 +109,18 @@ public class GPSService extends Service implements
         double lng = location.getLongitude();
         double alt = location.getAltitude();
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String key = getString(R.string.route_name_intent_extra);
+        String routeName = sharedPref.getString(key, "default");
+
         // Create a new map of values,
         ContentValues values = new ContentValues();
         values.put(DataEntry.COLUMN_DATA_LATITUDE, lat);
         values.put(DataEntry.COLUMN_DATA_LONGITUDE, lng);
         values.put(DataEntry.COLUMN_DATA_ALTITUDE, alt);
         values.put(DataEntry.COLUMN_DATA_DATE, currentDateTime);
-        values.put(DataEntry.COLUMN_DATA_ROUTE_NAME, "test");
-        //TODO: get rid of this test thing
+        values.put(DataEntry.COLUMN_DATA_ROUTE_NAME, routeName);
+        
 
         // Insert a new location into the provider, returning the content URI for the new location.
         Uri newUri = getContentResolver().insert(DataEntry.CONTENT_URI, values);

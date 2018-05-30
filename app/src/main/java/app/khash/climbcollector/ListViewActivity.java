@@ -1,14 +1,20 @@
 package app.khash.climbcollector;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import app.khash.climbcollector.DataBase.DataContract.DataEntry;
 
@@ -49,6 +55,17 @@ public class ListViewActivity extends AppCompatActivity implements
         View emptyView = findViewById(R.id.empty_view);
         locationListView.setEmptyView(emptyView);
 
+        //set up on long click listener to delete the data point
+        locationListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //id is the databse id
+                //pass in the id to the confirmation dialog
+                showDeleteDialog((int) id);
+                return false;
+            }
+        });//onLongClick
+
     }//onCreate
 
     @Override
@@ -79,6 +96,60 @@ public class ListViewActivity extends AppCompatActivity implements
                 sortOrder                    //The sort order for returned rows
         );
     }//onCreateLoader
+
+    private void showDeleteDialog(int id) {
+        final int itemId = id;
+        //Instantiate an AlertDialog.Builder with its constructor
+        AlertDialog.Builder deleteConfirmation = new AlertDialog.Builder(this);
+        //Chain together various setter methods to set the dialogConfirmation characteristics
+        deleteConfirmation
+                .setMessage("Are you sure you want to delete this item?")
+                .setTitle("CAUTION");
+        // Add the buttons. We can call helper methods from inside the onClick if we need to
+        deleteConfirmation.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                //delete the item in databse
+                deleteItem(itemId);
+            }
+        });
+        deleteConfirmation.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        /**
+         * Now we need to make our AlerDialog object (this is the one that will actually show the
+         * dialog.
+         * We do this by creating an object of AlertDialog class and use create() method on our
+         * builder object which we set up above, to create the AlertDialog object.
+         * Then we can call show() method on the AlertDialog object whenever we want to show that
+         */
+
+        final AlertDialog dialogConfirmation = deleteConfirmation.create();
+
+        dialogConfirmation.show();
+
+    }//showDeleteDialog
+
+    //helper method for deleting a single data item in db
+    private void deleteItem(int id) {
+        //create the URI
+        Uri itemUri = ContentUris.withAppendedId(DataEntry.CONTENT_URI, id);
+        //send it to the content provider
+        int result = getContentResolver().delete(itemUri, null , null);
+        //Check to see if the delete was successful
+        if (result == 1) {
+            Toast.makeText(getApplicationContext(),
+                    "Data (" + id +") deleted", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Error deleting", Toast.LENGTH_SHORT).show();
+        }
+
+    }//deleteItem
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {

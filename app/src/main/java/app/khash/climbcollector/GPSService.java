@@ -35,67 +35,41 @@ public class GPSService extends Service implements
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
     private static final String TAG = GPSService.class.getSimpleName();
-//    private String mRouteName = "";
+
+    //TODO: write description for the methods
 
     @Override
     public void onCreate() {
         super.onCreate();
         buildGoogleApiClient();
-        Log.i(TAG, "onCreate");
+    }//onCreate
 
-
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "onStartCommand");
-
         if (!mGoogleApiClient.isConnected())
             mGoogleApiClient.connect();
         return START_STICKY;
-    }
+    }//onStartCommand
 
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.i(TAG, "onConnected" + bundle);
-
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location l = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (l != null) {
-            Log.i(TAG, "lat " + l.getLatitude());
-            Log.i(TAG, "lng " + l.getLongitude());
-
-        }
-
         startLocationUpdate();
-    }
+    }//onConnected
 
     @Override
     public void onConnectionSuspended(int i) {
         Log.i(TAG, "onConnectionSuspended " + i);
 
-    }
+    }//onConnectionSuspended
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.i(TAG, "lat " + location.getLatitude());
-        Log.i(TAG, "lng " + location.getLongitude());
 
-        //TODO: get the lcoation
-
+        //insert location to the database passing in the location object
         insertDataToDb(location);
-    }
+    }//onLocationChanged
 
     //method for adding the location data to db
     private void insertDataToDb(Location location) {
@@ -120,7 +94,7 @@ public class GPSService extends Service implements
         values.put(DataEntry.COLUMN_DATA_ALTITUDE, alt);
         values.put(DataEntry.COLUMN_DATA_DATE, currentDateTime);
         values.put(DataEntry.COLUMN_DATA_ROUTE_NAME, routeName);
-        
+
 
         // Insert a new location into the provider, returning the content URI for the new location.
         Uri newUri = getContentResolver().insert(DataEntry.CONTENT_URI, values);
@@ -151,7 +125,7 @@ public class GPSService extends Service implements
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.i(TAG, "onConnectionFailed ");
 
-    }
+    }//onConnectionFailed
 
     private void initLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -159,13 +133,16 @@ public class GPSService extends Service implements
         mLocationRequest.setFastestInterval(2000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-    }
+    }//initLocationRequest
 
     private void startLocationUpdate() {
         initLocationRequest();
 
+        //check for location permission
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -174,13 +151,13 @@ public class GPSService extends Service implements
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             return;
-        }
+        }//check permission
+
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-    }
+    }//startLocationUpdate
 
     private void stopLocationUpdate() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -189,15 +166,14 @@ public class GPSService extends Service implements
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
                 .build();
-    }
+    }//buildGoogleApiClient
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "onDestroy - Estou sendo destruido ");
+
         mGoogleApiClient.disconnect();
+    }//onDestroy
 
-    }
 
-
-}
+}//GPSService

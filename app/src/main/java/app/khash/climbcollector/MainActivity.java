@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 String key = getString(R.string.route_name_intent_extra);
                 sharedPref.edit().putString(key, routeName2).apply();
-//                serviceStartIntent.putExtra(getString(R.string.route_name_intent_extra), routeName2);
                 startService(serviceStartIntent);
                 Toast.makeText(this, "Started", Toast.LENGTH_SHORT).show();
                 break;

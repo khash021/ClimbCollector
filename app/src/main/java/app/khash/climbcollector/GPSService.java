@@ -26,7 +26,7 @@ import java.util.Calendar;
 
 import app.khash.climbcollector.DataBase.DataContract.DataEntry;
 
-//TODO: CLEAN UP, GO THROUGH THE CODE AND CHANGE VARIABLE NAMSE AND COMMENT
+//TODO: CLEAN UP, GO THROUGH THE CODE AND CHANGE VARIABLE NAMES AND COMMENT
 
 public class GPSService extends Service implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
